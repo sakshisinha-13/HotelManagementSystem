@@ -13,7 +13,6 @@ function HotelDetails() {
   }, [hotel]);
 
   if (!hotel) return <p>Loading...</p>;
-
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow p-4 sticky top-0 z-10">
