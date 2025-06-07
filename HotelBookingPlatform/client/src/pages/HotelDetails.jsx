@@ -1,11 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import hotels from '../data/hotels.json';
+import { logVisit } from "../utils/userActivity"; // ✅ Import this
+import { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import hotels from '../data/hotels.json';
+import { logVisit } from "../utils/userActivity"; // ✅ import
 
 function HotelDetails() {
   const { id } = useParams();
-  const hotel = hotels.find(h => h.id === id);
+  const hotel = hotels.find(h => String(h.hotel_id) === id); // ✅ important fix if hotel_id is string
   const [recommendations, setRecommendations] = useState([]);
+
+  useEffect(() => {
+    if (hotel) {
+      logVisit(hotel.hotel_id); // ✅ log the visit here
+      const similar = hotels.filter(h =>
+        h.city === hotel.city && h.hotel_id !== hotel.hotel_id
+      );
+      setRecommendations(similar);
+    }
+  }, [hotel]);
+
 
   useEffect(() => {
     const similar = hotels.filter(h => h.location === hotel.location && h.id !== hotel.id);
